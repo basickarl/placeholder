@@ -5,25 +5,32 @@ function placeholderPolyfill() {
     ie.innerHTML = '<!--[if IE]><i></i><![endif]-->';
     var isIe = (ie.getElementsByTagName('i').length == 1);
     if (isIe) {
-        ie.innerHTML = '<!--[if lte IE 9]><i></i><![endif]-->';
+        ie.innerHTML = '<!--[if lte IE 7]><i></i><![endif]-->';
         isIe = (ie.getElementsByTagName('i').length == 1);
-        if (isIe) {
-            isIe = 9;
+        if (isIe) { // IE 7 or less
+            isIe = 7;
+            console.error('Sorry to inform but this placeholder polyfill does not work with versions of Internet Explorer 7 and below. Upgrade or change browser!');
         } else {
-            console.error('Sorry to inform but this website does not work with versions of Internet Explorer 8 and below. Upgrade or change browser!');
-            isIe = 8; // ie8 and below
+            ie.innerHTML = '<!--[if lte IE 9]><i></i><![endif]-->';
+            isIe = (ie.getElementsByTagName('i').length == 1);
+            if (isIe) { // IE 8 or 9
+                isIe = 8; 
+            } else { // IE 10 or greater
+                isIE = 10
+            }
+
         }
     }
 
-    if (isIe !== false) { // else ie10+
+    if (isIe == 8) { // Only support IE 8 or 9
         function add_placeholder(id) {
             var el = document.getElementById(id);
             var placeholder = document.getElementById(id).getAttribute('placeholder');
             el.placeholder = placeholder;
 
-            el.value = placeholder; // set initial placeholder text
-            el.defaultClassName = el.className; // save default class
-            el.className = el.defaultClassName + ' placeholder'; // set initial placeholder style
+            el.value = placeholder; // Set initial placeholder text
+            el.defaultClassName = el.className; // Save default class
+            el.className = el.defaultClassName + ' placeholder'; // Set initial placeholder style
             el.ifPlaceholder = true;
 
             el.onfocus = function () {
@@ -43,10 +50,11 @@ function placeholderPolyfill() {
             el.onblur();
         }
 
+        // Fix for input text and password
         var list = document.getElementsByTagName('input');
         for (var i = 0; i < list.length; i++) {
             var type = list[i].getAttribute('type');
-            if (type != 'undefined' && type != null) { // make all inputs have type
+            if (type != 'undefined' && type != null) { // Make all inputs have type
                 if (type == 'text' || type == 'password') {
                     console.log('Adding placeholder to ' + list[i].getAttribute('id'));
                     add_placeholder(list[i].getAttribute('id'));
@@ -55,6 +63,7 @@ function placeholderPolyfill() {
                 console.log('Oh dearie me, an input without a type specified, tsk tsk. Fix.');
             }
         }
+        // Fix for textarea
         var list = document.getElementsByTagName('textarea');
         for (var i = 0; i < list.length; i++) {
             add_placeholder(list[i].getAttribute('id'));
