@@ -1,6 +1,6 @@
 'use strict';
 
-window.onload = function () {
+function placeholderPolyfill() {
     var ie = document.createElement('div');
     ie.innerHTML = '<!--[if IE]><i></i><![endif]-->';
     var isIe = (ie.getElementsByTagName('i').length == 1);
