@@ -11,7 +11,7 @@ window.onload = function () {
         if (isIe) {
             isIe = 9;
         } else {
-            alert('Sorry to inform but this website does not work with versions of Internet Explorer 8 and below. Upgrade or change browser!');
+            console.error('Sorry to inform but this website does not work with versions of Internet Explorer 8 and below. Upgrade or change browser!');
             isIe = 8; // ie8 and below
         }
     } else {
