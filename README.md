@@ -7,7 +7,7 @@ Example:
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Test</title>
+        <title>placeholder-polyfill</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <style>
             .placeholder {
@@ -20,7 +20,9 @@ Example:
     </head>
     <body>
         <input type="text" placeholder="placeholder text"><br>
-        <input type="text" placeholder="my custom placeholder text" placeholderclassname="my-custom-placeholder"><br>
+        <input type="text" placeholder="my custom placeholder text" placeholderclassname="my-custom-placeholder">
+
+        <script src="placeholder.js"></script>
         <script>
             window.onload = function() {
                 placeholderPolyfill();
