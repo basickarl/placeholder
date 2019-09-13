@@ -47,7 +47,7 @@ window.onload = function () {
         }
 
         var list = document.getElementsByTagName('input');
-        for (i = 0; i < list.length; i++) {
+        for (var i = 0; i < list.length; i++) {
             var type = list[i].getAttribute('type');
             if (type != 'undefined' && type != null) { // make all inputs have type
                 if (type == 'text' || type == 'password') {
@@ -59,7 +59,7 @@ window.onload = function () {
             }
         }
         var list = document.getElementsByTagName('textarea');
-        for (i = 0; i < list.length; i++) {
+        for (var i = 0; i < list.length; i++) {
             add_placeholder(list[i].getAttribute('id'));
         }
     }
