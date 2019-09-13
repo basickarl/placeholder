@@ -13,11 +13,9 @@ window.onload = function () {
             console.error('Sorry to inform but this website does not work with versions of Internet Explorer 8 and below. Upgrade or change browser!');
             isIe = 8; // ie8 and below
         }
-    } else {
-        isIe = false;
     }
 
-    if (isIe == 8 || isIe == 9) { // else ie10+
+    if (isIe !== false) { // else ie10+
         function add_placeholder(id) {
             var el = document.getElementById(id);
             var placeholder = document.getElementById(id).getAttribute('placeholder');
@@ -50,7 +48,7 @@ window.onload = function () {
             var type = list[i].getAttribute('type');
             if (type != 'undefined' && type != null) { // make all inputs have type
                 if (type == 'text' || type == 'password') {
-                    console.log('adding add_placeholder to ' + list[i].getAttribute('id'));
+                    console.log('Adding placeholder to ' + list[i].getAttribute('id'));
                     add_placeholder(list[i].getAttribute('id'));
                 }
             } else {
