@@ -18,21 +18,25 @@ function placeholderPolyfill() {
             } else { // IE 10 or greater
                 isIE = 10
             }
-
         }
     }
 
     if (isIe == 8) { // Only support IE 8 or 9
-        function add_placeholder(id) {
-            var el = document.getElementById(id);
-            var placeholder = document.getElementById(id).getAttribute('placeholder');
-            el.placeholder = placeholder;
-
+        function add_placeholder(el) {
+            var placeholder = el.getAttribute('placeholder');
+            if (placeholder == null) { // No placeholder attribute exists on input element
+                return;
+            }
+            el.placeholder = placeholder; // Storage of the placeholder text
             el.value = placeholder; // Set initial placeholder text
+            var placeholderClassname = el.getAttribute('placeholderclassname');
             el.defaultClassName = el.className; // Save default class
-            el.className = el.defaultClassName + ' placeholder'; // Set initial placeholder style
+            if (placeholderClassname != null) {
+                el.className = el.defaultClassName + ' ' + placeholderClassname; // Add custom style class
+            } else {
+                el.className = el.defaultClassName + ' placeholder'; // Add default style class
+            }
             el.ifPlaceholder = true;
-
             el.onfocus = function () {
                 if (this.value == this.placeholder && this.ifPlaceholder == true) {
                     this.ifPlaceholder = false;
@@ -44,10 +48,14 @@ function placeholderPolyfill() {
                 if (this.value.length == 0) {
                     this.ifPlaceholder = true;
                     this.value = this.placeholder;
-                    el.className = el.defaultClassName + ' placeholder';
+                    if (placeholderClassname != null) {
+                        el.className = el.defaultClassName + ' ' + placeholderClassname; // Add custom style class
+                    } else {
+                        el.className = el.defaultClassName + ' placeholder'; // Add default style class
+                    }
                 }
             };
-            el.onblur();
+            el.onblur(); // Set initial style
         }
 
         // Fix for input text and password
@@ -56,8 +64,8 @@ function placeholderPolyfill() {
             var type = list[i].getAttribute('type');
             if (type != 'undefined' && type != null) { // Make all inputs have type
                 if (type == 'text' || type == 'password') {
-                    console.log('Adding placeholder to ' + list[i].getAttribute('id'));
-                    add_placeholder(list[i].getAttribute('id'));
+                    console.log('Adding placeholder to:', list[i]);
+                    addPlaceholder(list[i]);
                 }
             } else {
                 console.log('Oh dearie me, an input without a type specified, tsk tsk. Fix.');
@@ -66,7 +74,7 @@ function placeholderPolyfill() {
         // Fix for textarea
         var list = document.getElementsByTagName('textarea');
         for (var i = 0; i < list.length; i++) {
-            add_placeholder(list[i].getAttribute('id'));
+            addPlaceholder(list[i]);
         }
     }
 }
